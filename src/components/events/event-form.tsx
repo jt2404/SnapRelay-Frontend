@@ -2,7 +2,9 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, useWatch } from "react-hook-form";
-import { Loader2 } from "lucide-react";
+import { Info, Loader2, Lock, Users } from "lucide-react";
+
+import { cn } from "@/lib/utils";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -149,29 +151,64 @@ export function EventForm({
           name="privacyMode"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Privacy</FormLabel>
-              <Select
-                value={field.value}
-                onValueChange={(value) => {
-                  field.onChange(value);
-                  if (value === "private") {
-                    form.setValue("publicSubmissionEnabled", false);
-                  }
-                }}
-              >
-                <FormControl>
-                  <SelectTrigger className="w-full">
-                    <SelectValue />
-                  </SelectTrigger>
-                </FormControl>
-                <SelectContent>
-                  <SelectItem value="public">Public</SelectItem>
-                  <SelectItem value="private">Private</SelectItem>
-                </SelectContent>
-              </Select>
-              <FormDescription>
-                Public events can be discovered via QR code and shared links.
-              </FormDescription>
+              <FormLabel className="text-xs font-bold tracking-widest text-muted-foreground uppercase">
+                Privacy Level
+              </FormLabel>
+              <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+                {(
+                  [
+                    {
+                      value: "private" as const,
+                      icon: Lock,
+                      title: "Private",
+                      description:
+                        "Invite-only. Best for intimate family functions.",
+                    },
+                    {
+                      value: "public" as const,
+                      icon: Users,
+                      title: "Public",
+                      description:
+                        "Accessible via link. Perfect for guests to explore.",
+                    },
+                  ]
+                ).map((option) => {
+                  const isSelected = field.value === option.value;
+                  return (
+                    <button
+                      key={option.value}
+                      type="button"
+                      onClick={() => {
+                        field.onChange(option.value);
+                        if (option.value === "private") {
+                          form.setValue("publicSubmissionEnabled", false);
+                        }
+                      }}
+                      className={cn(
+                        "flex flex-col items-start gap-1.5 rounded-lg border p-4 text-left transition-colors",
+                        isSelected
+                          ? "border-primary bg-primary/10"
+                          : "border-border hover:bg-accent"
+                      )}
+                    >
+                      <span className="flex items-center gap-2 font-semibold text-foreground">
+                        <option.icon className="size-4" />
+                        {option.title}
+                      </span>
+                      <span className="text-sm text-muted-foreground">
+                        {option.description}
+                      </span>
+                    </button>
+                  );
+                })}
+              </div>
+              {privacyMode === "private" && (
+                <div className="flex items-start gap-2 rounded-lg bg-muted px-3 py-2.5 text-sm text-muted-foreground">
+                  <Info className="mt-0.5 size-4 shrink-0" />
+                  Guests can only join private events via a secure invite link
+                  you generate.
+                </div>
+              )}
               <FormMessage />
             </FormItem>
           )}

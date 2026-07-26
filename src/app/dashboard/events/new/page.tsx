@@ -33,7 +33,7 @@ export default function NewEventPage() {
       {
         onSuccess: (event) => {
           toast.success("Event created");
-          router.push(`/dashboard/events/${event.id}`);
+          router.push(`/dashboard/events/${event.id}?tab=photos`);
         },
         onError: (error) => {
           const message =
@@ -54,7 +54,11 @@ export default function NewEventPage() {
       />
       <Card className="border-none shadow-sm">
         <CardContent>
-          <EventForm onSubmit={onSubmit} isSubmitting={mutation.isPending} />
+          <EventForm
+            onSubmit={onSubmit}
+            isSubmitting={mutation.isPending}
+            submitLabel="Save & Continue to Upload"
+          />
         </CardContent>
       </Card>
     </div>

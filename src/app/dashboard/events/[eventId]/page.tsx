@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { useParams } from "next/navigation";
+import { useParams, useSearchParams } from "next/navigation";
 import { useQuery } from "@tanstack/react-query";
 import { Pencil } from "lucide-react";
 import { toast } from "sonner";
@@ -11,8 +11,10 @@ import { EventStatusBadge } from "@/components/events/event-status-badge";
 import { EventSummary } from "@/components/events/event-summary";
 import { EventForm } from "@/components/events/event-form";
 import { QRCodeCard } from "@/components/events/qr-code-card";
+import { PhotoManagerSection } from "@/components/photos/photo-manager-section";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
   Dialog,
   DialogContent,
@@ -27,8 +29,10 @@ import type { EventFormValues } from "@/lib/validation/event";
 
 export default function EventDetailPage() {
   const { eventId } = useParams<{ eventId: string }>();
+  const searchParams = useSearchParams();
   const { user } = useAuth();
   const [editOpen, setEditOpen] = React.useState(false);
+  const [tab, setTab] = React.useState(searchParams.get("tab") ?? "overview");
 
   const eventQuery = useQuery({
     queryKey: ["event", eventId],
@@ -106,12 +110,27 @@ export default function EventDetailPage() {
         }
       />
 
-      <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
-        <div className="lg:col-span-2">
+      <Tabs value={tab} onValueChange={setTab}>
+        <TabsList className="mb-6 w-full sm:w-fit">
+          <TabsTrigger value="overview">Overview</TabsTrigger>
+          <TabsTrigger value="photos">Photos</TabsTrigger>
+          <TabsTrigger value="share">Share</TabsTrigger>
+        </TabsList>
+
+        <TabsContent value="overview">
           <EventSummary event={event} />
-        </div>
-        <QRCodeCard eventId={event.id} />
-      </div>
+        </TabsContent>
+
+        <TabsContent value="photos">
+          <PhotoManagerSection eventId={event.id} />
+        </TabsContent>
+
+        <TabsContent value="share">
+          <div className="max-w-md">
+            <QRCodeCard eventId={event.id} />
+          </div>
+        </TabsContent>
+      </Tabs>
 
       <Dialog open={editOpen} onOpenChange={setEditOpen}>
         <DialogContent className="max-h-[85vh] max-w-xl overflow-y-auto">

@@ -2,11 +2,10 @@
 
 import * as React from "react";
 import { useQuery } from "@tanstack/react-query";
-import { Copy, Download, Loader2, QrCode } from "lucide-react";
+import { Copy, Download, Loader2 } from "lucide-react";
 import { toast } from "sonner";
 
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { fetchEventQrCodeBlobUrl, getEventShareLink } from "@/lib/api/events";
 
 export function QRCodeCard({ eventId }: { eventId: string }) {
@@ -39,64 +38,64 @@ export function QRCodeCard({ eventId }: { eventId: string }) {
   }
 
   return (
-    <Card className="border-none shadow-sm">
-      <CardHeader>
-        <CardTitle className="flex items-center gap-2">
-          <QrCode className="size-4.5" />
-          Share Gallery
-        </CardTitle>
-      </CardHeader>
-      <CardContent className="flex flex-col items-center gap-5">
-        <div className="flex size-48 items-center justify-center rounded-lg bg-muted">
-          {qrQuery.isLoading ? (
-            <Loader2 className="size-6 animate-spin text-muted-foreground" />
-          ) : qrQuery.data ? (
-            // eslint-disable-next-line @next/next/no-img-element
-            <img
-              src={qrQuery.data}
-              alt="Event QR code"
-              className="size-48 rounded-lg object-contain"
-            />
-          ) : (
-            <span className="text-sm text-muted-foreground">Unavailable</span>
-          )}
-        </div>
+    <div className="flex flex-col items-center gap-5 rounded-xl bg-primary p-6 text-center">
+      <div>
+        <p className="font-heading text-lg font-semibold text-primary-foreground">
+          Event QR Entry
+        </p>
+        <p className="mt-1 text-sm text-primary-foreground/80">
+          Display this at the venue for instant guest access
+        </p>
+      </div>
 
-        <div className="w-full space-y-2">
-          <div className="truncate rounded-lg border border-border bg-muted/50 px-3 py-2 text-xs text-muted-foreground">
-            {shareLinkQuery.data?.url ?? "Loading link..."}
-          </div>
-          <div className="flex gap-2">
-            <Button
-              variant="outline"
-              className="flex-1"
-              onClick={copyLink}
-              disabled={!shareLinkQuery.data}
-            >
-              <Copy />
-              Copy Link
-            </Button>
-            <Button
-              variant="outline"
-              className="flex-1"
-              disabled={!qrQuery.data}
-              asChild={Boolean(qrQuery.data)}
-            >
-              {qrQuery.data ? (
-                <a href={qrQuery.data} download={`event-${eventId}-qr.png`}>
-                  <Download />
-                  Download
-                </a>
-              ) : (
-                <>
-                  <Download />
-                  Download
-                </>
-              )}
-            </Button>
-          </div>
+      <div className="flex size-44 items-center justify-center rounded-lg bg-card p-3">
+        {qrQuery.isLoading ? (
+          <Loader2 className="size-6 animate-spin text-muted-foreground" />
+        ) : qrQuery.data ? (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img
+            src={qrQuery.data}
+            alt="Event QR code"
+            className="size-full object-contain"
+          />
+        ) : (
+          <span className="text-sm text-muted-foreground">Unavailable</span>
+        )}
+      </div>
+
+      <div className="w-full space-y-2">
+        <div className="truncate rounded-lg bg-card-foreground/10 px-3 py-2 text-xs text-primary-foreground/90">
+          {shareLinkQuery.data?.url ?? "Loading link..."}
         </div>
-      </CardContent>
-    </Card>
+        <div className="flex gap-2">
+          <Button
+            variant="secondary"
+            className="flex-1"
+            onClick={copyLink}
+            disabled={!shareLinkQuery.data}
+          >
+            <Copy />
+            Copy Link
+          </Button>
+          <Button
+            className="flex-1 bg-card text-foreground hover:bg-card/90"
+            disabled={!qrQuery.data}
+            asChild={Boolean(qrQuery.data)}
+          >
+            {qrQuery.data ? (
+              <a href={qrQuery.data} download={`event-${eventId}-qr.png`}>
+                <Download />
+                Download
+              </a>
+            ) : (
+              <>
+                <Download />
+                Download
+              </>
+            )}
+          </Button>
+        </div>
+      </div>
+    </div>
   );
 }
