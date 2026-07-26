@@ -17,7 +17,7 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
+import { AuthInput } from "@/components/auth/auth-input";
 import { loginUser } from "@/lib/api/auth";
 import { ApiError } from "@/lib/api/client";
 import { useAuth } from "@/lib/hooks/use-auth";
@@ -65,7 +65,7 @@ export default function LoginPage() {
                   Email Address
                 </FormLabel>
                 <FormControl>
-                  <Input
+                  <AuthInput
                     type="email"
                     placeholder="e.g. hello@studio.com"
                     autoComplete="email"
@@ -88,7 +88,7 @@ export default function LoginPage() {
                   </FormLabel>
                 </div>
                 <FormControl>
-                  <Input
+                  <AuthInput
                     type="password"
                     placeholder="••••••••"
                     autoComplete="current-password"

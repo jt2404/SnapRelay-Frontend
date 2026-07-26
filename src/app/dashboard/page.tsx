@@ -2,13 +2,7 @@
 
 import Link from "next/link";
 import { useQuery } from "@tanstack/react-query";
-import {
-  CalendarDays,
-  Camera,
-  ImagePlay,
-  Plus,
-  UsersRound,
-} from "lucide-react";
+import { CalendarDays, Camera, ImagePlay, Plus, UsersRound } from "lucide-react";
 
 import { PageHeader } from "@/components/shared/page-header";
 import { StatsCard } from "@/components/shared/stats-card";
@@ -37,14 +31,6 @@ export default function DashboardPage() {
       <PageHeader
         title={`Welcome back${firstName ? `, ${firstName}` : ""}`}
         description="Here's what's happening across your studio."
-        action={
-          <Button asChild>
-            <Link href="/dashboard/events/new">
-              <Plus />
-              New Event
-            </Link>
-          </Button>
-        }
       />
 
       <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
@@ -52,24 +38,28 @@ export default function DashboardPage() {
           label="Events"
           value={metricsQuery.data?.total_events ?? 0}
           icon={CalendarDays}
+          tone="gold"
           loading={metricsQuery.isLoading}
         />
         <StatsCard
           label="Photos"
           value={metricsQuery.data?.total_photos ?? 0}
           icon={Camera}
+          tone="blush"
           loading={metricsQuery.isLoading}
         />
         <StatsCard
           label="Guests"
           value={metricsQuery.data?.total_guests ?? 0}
           icon={UsersRound}
+          tone="muted"
           loading={metricsQuery.isLoading}
         />
         <StatsCard
           label="Active Galleries"
           value={metricsQuery.data?.active_galleries ?? 0}
           icon={ImagePlay}
+          tone="accent"
           loading={metricsQuery.isLoading}
         />
       </div>

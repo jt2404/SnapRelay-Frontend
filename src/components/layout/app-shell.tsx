@@ -3,7 +3,7 @@
 import * as React from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { Menu, LogOut } from "lucide-react";
+import { Menu, LogOut, Plus } from "lucide-react";
 
 import { SidebarNav } from "@/components/layout/sidebar-nav";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
@@ -30,11 +30,29 @@ function initials(name: string) {
 
 function BrandMark() {
   return (
-    <Link href="/dashboard" className="flex items-center gap-2 px-3">
-      <span className="font-heading text-2xl font-bold text-gold">
+    <Link href="/dashboard" className="flex flex-col px-1">
+      <span className="font-heading text-xl leading-tight font-bold text-gold">
         SnapRelay
       </span>
+      <span className="text-xs text-muted-foreground">
+        Premium Management
+      </span>
     </Link>
+  );
+}
+
+function NewEventButton({ onNavigate }: { onNavigate?: () => void }) {
+  return (
+    <Button
+      className="w-full justify-start rounded-lg font-semibold"
+      asChild
+      onClick={onNavigate}
+    >
+      <Link href="/dashboard/events/new">
+        <Plus />
+        New Event
+      </Link>
+    </Button>
   );
 }
 
@@ -82,12 +100,15 @@ export function AppShell({ children }: { children: React.ReactNode }) {
 
   return (
     <div className="flex min-h-screen bg-background">
-      <aside className="hidden w-64 shrink-0 border-r border-border bg-card md:flex md:flex-col">
-        <div className="flex h-16 items-center border-b border-border">
+      <aside className="hidden w-64 shrink-0 flex-col bg-muted/60 md:flex">
+        <div className="flex h-20 items-center px-4 pt-2">
           <BrandMark />
         </div>
         <div className="flex-1 overflow-y-auto py-4">
           <SidebarNav />
+        </div>
+        <div className="border-t border-border/60 p-3">
+          <NewEventButton />
         </div>
       </aside>
 
@@ -100,12 +121,15 @@ export function AppShell({ children }: { children: React.ReactNode }) {
                   <Menu className="size-5" />
                 </Button>
               </SheetTrigger>
-              <SheetContent side="left" className="w-64 p-0">
-                <div className="flex h-16 items-center border-b border-border">
+              <SheetContent side="left" className="flex w-64 flex-col bg-muted/60 p-0">
+                <div className="flex h-20 items-center px-4 pt-2">
                   <BrandMark />
                 </div>
                 <div className="flex-1 overflow-y-auto py-4">
                   <SidebarNav onNavigate={() => setMobileOpen(false)} />
+                </div>
+                <div className="border-t border-border/60 p-3">
+                  <NewEventButton onNavigate={() => setMobileOpen(false)} />
                 </div>
               </SheetContent>
             </Sheet>

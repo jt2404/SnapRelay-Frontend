@@ -17,7 +17,7 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
+import { AuthInput } from "@/components/auth/auth-input";
 import { loginUser, registerUser } from "@/lib/api/auth";
 import { ApiError } from "@/lib/api/client";
 import { createStudio } from "@/lib/api/studios";
@@ -90,7 +90,7 @@ export default function RegisterPage() {
                   Studio Name
                 </FormLabel>
                 <FormControl>
-                  <Input placeholder="e.g. Ethereal Union Studios" {...field} />
+                  <AuthInput placeholder="e.g. Ethereal Union Studios" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -106,7 +106,7 @@ export default function RegisterPage() {
                   Your Name
                 </FormLabel>
                 <FormControl>
-                  <Input
+                  <AuthInput
                     placeholder="e.g. Priya Sharma"
                     autoComplete="name"
                     {...field}
@@ -126,7 +126,7 @@ export default function RegisterPage() {
                   Email Address
                 </FormLabel>
                 <FormControl>
-                  <Input
+                  <AuthInput
                     type="email"
                     placeholder="e.g. hello@studio.com"
                     autoComplete="email"
@@ -147,7 +147,7 @@ export default function RegisterPage() {
                   Password
                 </FormLabel>
                 <FormControl>
-                  <Input
+                  <AuthInput
                     type="password"
                     placeholder="At least 8 characters"
                     autoComplete="new-password"
@@ -168,7 +168,7 @@ export default function RegisterPage() {
                   Confirm Password
                 </FormLabel>
                 <FormControl>
-                  <Input
+                  <AuthInput
                     type="password"
                     placeholder="Re-enter your password"
                     autoComplete="new-password"
